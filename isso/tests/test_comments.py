@@ -68,7 +68,7 @@ class TestComments(unittest.TestCase):
         rv = self.post('/new?uri=%2Fpath%2F', data=json.dumps({'text': 'Lorem ipsum ...'}))
 
         self.assertEqual(rv.status_code, 201)
-        self.assertIn("Set-Cookie", rv.headers)
+        self.assertIn(b"Set-Cookie", rv.headers)
 
         rv = loads(rv.data)
 

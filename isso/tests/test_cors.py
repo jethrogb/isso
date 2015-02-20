@@ -32,20 +32,20 @@ class CORSTest(unittest.TestCase):
 
         rv = client.get("/", headers={"Origin": "https://example.tld"})
 
-        self.assertEqual(rv.headers["Access-Control-Allow-Origin"], "https://example.tld")
-        self.assertEqual(rv.headers["Access-Control-Allow-Credentials"], "true")
-        self.assertEqual(rv.headers["Access-Control-Allow-Methods"], "HEAD, GET, POST, PUT, DELETE")
-        self.assertEqual(rv.headers["Access-Control-Allow-Headers"], "Foo, Bar")
-        self.assertEqual(rv.headers["Access-Control-Expose-Headers"], "Spam")
+        self.assertEqual(rv.headers[b"Access-Control-Allow-Origin"], "https://example.tld")
+        self.assertEqual(rv.headers[b"Access-Control-Allow-Credentials"], "true")
+        self.assertEqual(rv.headers[b"Access-Control-Allow-Methods"], "HEAD, GET, POST, PUT, DELETE")
+        self.assertEqual(rv.headers[b"Access-Control-Allow-Headers"], "Foo, Bar")
+        self.assertEqual(rv.headers[b"Access-Control-Expose-Headers"], "Spam")
 
         a = client.get("/", headers={"Origin": "http://example.tld"})
-        self.assertEqual(a.headers["Access-Control-Allow-Origin"], "http://example.tld")
+        self.assertEqual(a.headers[b"Access-Control-Allow-Origin"], "http://example.tld")
 
         b = client.get("/", headers={"Origin": "http://example.tld"})
-        self.assertEqual(b.headers["Access-Control-Allow-Origin"], "http://example.tld")
+        self.assertEqual(b.headers[b"Access-Control-Allow-Origin"], "http://example.tld")
 
         c = client.get("/", headers={"Origin": "http://foo.other"})
-        self.assertEqual(c.headers["Access-Control-Allow-Origin"], "https://example.tld")
+        self.assertEqual(c.headers[b"Access-Control-Allow-Origin"], "https://example.tld")
 
 
     def test_preflight(self):
@@ -58,6 +58,6 @@ class CORSTest(unittest.TestCase):
         self.assertEqual(rv.status_code, 200)
 
         for hdr in ("Origin", "Headers", "Credentials", "Methods"):
-            self.assertIn("Access-Control-Allow-%s" % hdr, rv.headers)
+            self.assertIn(b"Access-Control-Allow-%s" % hdr, rv.headers)
 
-        self.assertEqual(rv.headers["Access-Control-Allow-Origin"], "http://example.tld")
+        self.assertEqual(rv.headers[b"Access-Control-Allow-Origin"], "http://example.tld")
